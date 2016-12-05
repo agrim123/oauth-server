@@ -1,2 +1,4 @@
 config/config.json
 vendor/
+private.key
+public.key

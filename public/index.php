@@ -30,12 +30,32 @@ $app->get('/authorize', function (\Psr\Http\Message\ServerRequestInterface $requ
         return $exception->generateHttpResponse($response);
         
     } catch (\Exception $exception) {
-    
+        echo "500";
         // Unknown exception
-        $body = new Stream('php://temp', 'r+');
+     /*   $body = new App\Stream('php://temp', 'r+');
         $body->write($exception->getMessage());
-        return $response->withStatus(500)->withBody($body);
+        return $response->withStatus(500)->withBody($body);*/
         
+    }
+});
+$app->post('/access_token', function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($server) {
+
+    try {
+    
+        // Try to respond to the request
+        return $server->respondToAccessTokenRequest($request, $response);
+
+    } catch (\League\OAuth2\Server\Exception\OAuthServerException $exception) {
+    
+        // All instances of OAuthServerException can be formatted into a HTTP response
+        return $exception->generateHttpResponse($response);
+        
+    } catch (\Exception $exception) {
+        echo "500";
+        // Unknown exception
+        /*$body = new Stream('php://temp', 'r+');
+        $body->write($exception->getMessage());
+        return $response->withStatus(500)->withBody($body);*/
     }
 });
 $app->run();
