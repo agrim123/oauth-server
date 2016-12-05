@@ -1,8 +1,8 @@
 <?php
 
-namespace OauthServer\Storage;
+namespace SDSLabs\Falcon\Storage;
 
-//use OauthServer\Model\Database;
+//use SDSLabs\Falcon\Model\Database;
 
 use League\OAuth2\Server\Entity\ClientEntity;
 use League\OAuth2\Server\Entity\SessionEntity;
