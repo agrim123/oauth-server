@@ -1,5 +1,6 @@
 <?php
 require("../config/bootstrap.php");
+use Slim\App;
 
 $app->get('/authorize', function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($server) {
    
@@ -32,10 +33,10 @@ $app->get('/authorize', function (\Psr\Http\Message\ServerRequestInterface $requ
     } catch (\Exception $exception) {
         echo "500";
         // Unknown exception
-     /*   $body = new App\Stream('php://temp', 'r+');
+       /*$body = new Zend\Diactoros\Stream('php://temp', 'r+');
         $body->write($exception->getMessage());
-        return $response->withStatus(500)->withBody($body);*/
-        
+        return $response->withStatus(500)->withBody($body);
+       */ 
     }
 });
 $app->post('/access_token', function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($server) {

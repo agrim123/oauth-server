@@ -31,21 +31,27 @@ $server = new \League\OAuth2\Server\AuthorizationServer(
 	$publicKey
 	);
 
-$grant = new \League\OAuth2\Server\Grant\AuthCodeGrant(
+$auth_code_grant = new \League\OAuth2\Server\Grant\AuthCodeGrant(
 	$authCodeRepository,
 	$refreshTokenRepository,
      new \DateInterval('PT10M') // authorization codes will expire after 10 minutes
      );
 
-$grant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
+$auth_code_grant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
 
 // Enable the authentication code grant on the server
 $server->enableGrantType(
-	$grant,
+	$auth_code_grant,
     new \DateInterval('PT1H') // access tokens will expire after 1 hour
     );
+$refresh_grant = new \League\OAuth2\Server\Grant\RefreshTokenGrant($refreshTokenRepository);
+$refresh_grant->setRefreshTokenTTL(new \DateInterval('P1M')); // new refresh tokens will expire after 1 month
 
-
+// Enable the refresh token grant on the server
+$server->enableGrantType(
+    $refresh_grant,
+    new \DateInterval('PT1H') // new access tokens will expire after an hour
+);
 $app = new App();
 if ($CONFIG["environment"] == "production") {
 	$app->config("debug", false);
