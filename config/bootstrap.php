@@ -1,6 +1,6 @@
 <?php 
 
-use SDSLabs\Falcon\Storage;
+use Oauth\Server\Storage;
 
 	global $CONFIG;
 	use \Slim\App;
@@ -12,9 +12,38 @@ use SDSLabs\Falcon\Storage;
 
     // Autoloading
 	require("../vendor/autoload.php");
-	 $authorization_server = new \League\OAuth2\Server\AuthorizationServer();
-	$auth_code_storage = new Storage\AuthCodeStorage();
-	$authorization_server->setAuthCodeStorage($auth_code_storage);
+	$clientRepository = new Oauth\Server\Repositories\ClientRepository(); // instance of ClientRepositoryInterface
+$scopeRepository = new Oauth\Server\Repositories\ScopeRepository(); // instance of ScopeRepositoryInterface
+$accessTokenRepository = new Oauth\Server\Repositories\AccessTokenRepository(); // instance of AccessTokenRepositoryInterface
+$authCodeRepository = new Oauth\Server\Repositories\AuthCodeRepository(); // instance of AuthCodeRepositoryInterface
+$refreshTokenRepository = new Oauth\Server\Repositories\RefreshTokenRepository(); // instance of RefreshTokenRepositoryInterface
+
+$privateKey = 'file://path/to/private.key';
+//$privateKey = new CryptKey('file://path/to/private.key', 'passphrase'); // if private key has a pass phrase
+$publicKey = 'file://path/to/public.key';
+
+// Setup the authorization server
+$server = new \League\OAuth2\Server\AuthorizationServer(
+    $clientRepository,
+    $accessTokenRepository,
+    $scopeRepository,
+    $privateKey,
+    $publicKey
+);
+
+$grant = new \League\OAuth2\Server\Grant\AuthCodeGrant(
+     $authCodeRepository,
+     $refreshTokenRepository,
+     new \DateInterval('PT10M') // authorization codes will expire after 10 minutes
+ );
+
+$grant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
+
+// Enable the authentication code grant on the server
+$server->enableGrantType(
+    $grant,
+    new \DateInterval('PT1H') // access tokens will expire after 1 hour
+);
 
 
 	$app = new App();
