@@ -2,7 +2,8 @@
 	"name":"oauth/server",
     "require": {
         "league/oauth2-server": "*",
-        "slim/slim": "^3.6"
+        "slim/slim": "^3.6",
+		"paragonie/random_compat": "^2.0"
     },
       "autoload": {
         "classmap": [

@@ -13,6 +13,14 @@ if ($CONFIG["environment"] == "development") {
 
 require("../vendor/autoload.php");
 
+    // Loading storage
+//$session_storage = new Storage\SessionStorage();
+//$access_token_storage = new Storage\AccessTokenStorage();
+//$refresh_token_storage = new Storage\RefreshTokenStorage();
+//$client_storage = new Storage\ClientStorage();
+//$scope_storage = new Storage\ScopeStorage();
+//$auth_code_storage = new Storage\AuthCodeStorage();
+
 // replaced Storage with Repositories in accordance with new version of oauth2.0
 //intialize repositories
 $clientRepository = new Oauth\Server\Repositories\ClientRepository(); 
@@ -66,7 +74,11 @@ $authorization_server->enableGrantType(
     new \DateInterval('PT1H') // access tokens will expire after 1 hour
 );
 */
-
+// resource server
+$resource_server = new \League\OAuth2\Server\ResourceServer(
+	$accessTokenRepository,
+	$publicKey
+	);
 
 $app = new App();
 if ($CONFIG["environment"] == "production") {

@@ -8,6 +8,9 @@ use \Oauth\Server\Entities\UserEntity;
 
 class AccessToken 
 {
+	public static function get(ServerRequestInterface $request,ResponseInterface $response){
+		return "resource server";
+	}
 	public static function post(ServerRequestInterface $request, ResponseInterface $response){
 		global $authorization_server;
 		try {
