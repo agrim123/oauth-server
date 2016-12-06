@@ -38,9 +38,10 @@ $auth_code_grant = new \League\OAuth2\Server\Grant\AuthCodeGrant(
 	);
 
 $auth_code_grant->setRefreshTokenTTL(new \DateInterval('P1M'));
+//$authorization_server->addGrantType($auth_code_grant);
 $authorization_server->enableGrantType(
 	$auth_code_grant,
-    new \DateInterval('PT1H') // access tokens will expire after 1 hour
+    new \DateInterval('PT1H')
     );
 /*$refresh_grant = new \League\OAuth2\Server\Grant\RefreshTokenGrant($refreshTokenRepository);
 $refresh_grant->setRefreshTokenTTL(new \DateInterval('P1M')); // new refresh tokens will expire after 1 month

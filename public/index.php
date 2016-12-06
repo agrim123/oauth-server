@@ -4,6 +4,7 @@ use Slim\App;
 
 $app->get('/authorize', function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($authorization_server) {
    
+    try {
     
         // Validate the HTTP request and return an AuthorizationRequest object.
         $authRequest = $authorization_server->validateAuthorizationRequest($request);
@@ -24,7 +25,19 @@ $app->get('/authorize', function (\Psr\Http\Message\ServerRequestInterface $requ
         // Return the HTTP redirect response
         return $authorization_server->completeAuthorizationRequest($authRequest, $response);
         
-   
+    } catch (OAuthServerException $exception) {
+    
+        // All instances of OAuthServerException can be formatted into a HTTP response
+        return $exception->generateHttpResponse($response);
+        
+    } catch (\Exception $exception) {
+        echo "500";
+        // Unknown exception
+       /*$body = new Zend\Diactoros\Stream('php://temp', 'r+');
+        $body->write($exception->getMessage());
+        return $response->withStatus(500)->withBody($body);
+       */ 
+    }
 });
 $app->post('/access_token', function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($authorization_server) {
 
