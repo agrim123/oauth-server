@@ -27,6 +27,9 @@ class ScopeRepository implements ScopeRepositoryInterface
             'email' => [
                 'description' => 'Your email address',
             ],
+            'read' => [
+                'description' => 'finally works!!'
+            ],
         ];
 
         if (array_key_exists($scopeIdentifier, $scopes) === false) {

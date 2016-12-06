@@ -23,7 +23,7 @@ class ClientRepository implements ClientRepositoryInterface
             'myawesomeapp' => [
                 'secret'          => password_hash('abc123', PASSWORD_BCRYPT),
                 'name'            => 'My Awesome App',
-                'redirect_uri'    => 'http://foo/bar',
+                'redirect_uri'    => 'falcon.sdslabs.local',
                 'is_confidential' => true,
             ],
         ];
