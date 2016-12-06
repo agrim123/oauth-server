@@ -30,28 +30,35 @@ $authorization_server = new \League\OAuth2\Server\AuthorizationServer(
 	$privateKey,
 	$publicKey
 	);
-
+// enable auth code grant
+// currently not working
 $auth_code_grant = new \League\OAuth2\Server\Grant\AuthCodeGrant(
 	$authCodeRepository,
 	$refreshTokenRepository,
 	new \DateInterval('PT10M')
 	);
-
 $auth_code_grant->setRefreshTokenTTL(new \DateInterval('P1M'));
 //$authorization_server->addGrantType($auth_code_grant);
 $authorization_server->enableGrantType(
 	$auth_code_grant,
-    new \DateInterval('PT1H')
-    );
-/*$refresh_grant = new \League\OAuth2\Server\Grant\RefreshTokenGrant($refreshTokenRepository);
+	new \DateInterval('PT1H')
+	);
+// enable client credentials grant
+$client_credentials_grant = new \League\OAuth2\Server\Grant\ClientCredentialsGrant();
+$authorization_server->enableGrantType(
+	$client_credentials_grant,
+    new \DateInterval('PT1H') // access tokens will expire after 1 hour
+);
+
+$refresh_grant = new \League\OAuth2\Server\Grant\RefreshTokenGrant($refreshTokenRepository);
 $refresh_grant->setRefreshTokenTTL(new \DateInterval('P1M')); // new refresh tokens will expire after 1 month
 
 // Enable the refresh token grant on the server
 $authorization_server->enableGrantType(
 	$refresh_grant,
     new \DateInterval('PT1H') // new access tokens will expire after an hour
-    );*/
-$app = new App();
-if ($CONFIG["environment"] == "production") {
-	$app->config("debug", false);
-}
+    );
+    $app = new App();
+    if ($CONFIG["environment"] == "production") {
+    	$app->config("debug", false);
+    }
