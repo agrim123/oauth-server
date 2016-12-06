@@ -1,5 +1,10 @@
 <?php
 
+/**************
+
+// add an extra column to oauth_client_redirect_uris 'name'
+
+**************/
 namespace Oauth\Server\Model;
 
 class Database
